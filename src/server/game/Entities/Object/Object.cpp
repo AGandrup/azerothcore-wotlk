@@ -248,7 +248,10 @@ void Object::SendUpdateToPlayer(Player* player)
     UpdateData upd;
     WorldPacket packet;
 
-    BuildCreateUpdateBlockForPlayer(&upd, player);
+    if (player->HaveAtClient(this))
+        BuildValuesUpdateBlockForPlayer(&upd, player);
+    else
+        BuildCreateUpdateBlockForPlayer(&upd, player);
     upd.BuildPacket(&packet);
     player->GetSession()->SendPacket(&packet);
 }
@@ -2041,7 +2044,7 @@ void Unit::BuildHeartBeatMsg(WorldPacket* data) const
     BuildMovementPacket(data);
 }
 
-void WorldObject::SendMessageToSetInRange(WorldPacket const* data, float dist, bool /*self*/, bool includeMargin, Player const* skipped_rcvr) const
+void WorldObject::SendMessageToSetInRange(WorldPacket const* data, float dist, bool /*self*/, Player const* skipped_rcvr) const
 {
     Acore::MessageDistDeliverer notifier(this, data, dist, false, skipped_rcvr);
     Cell::VisitWorldObjects(this, notifier, dist);

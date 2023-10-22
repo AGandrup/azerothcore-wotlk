@@ -5575,7 +5575,7 @@ void Player::SaveRecallPosition()
     m_recallO = GetOrientation();
 }
 
-void Player::SendMessageToSetInRange(WorldPacket const* data, float dist, bool self, bool includeMargin, Player const* skipped_rcvr) const
+void Player::SendMessageToSetInRange(WorldPacket const* data, float dist, bool self, Player const* skipped_rcvr) const
 {
     if (self)
         GetSession()->SendPacket(data);
@@ -11313,7 +11313,7 @@ WorldLocation Player::GetStartPosition() const
     return WorldLocation(mapId, info->positionX, info->positionY, info->positionZ, 0);
 }
 
-bool Player::HaveAtClient(WorldObject const* u) const
+bool Player::HaveAtClient(Object const* u) const
 {
     if (u == this)
     {
